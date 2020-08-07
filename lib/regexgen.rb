@@ -1,4 +1,6 @@
-require "regexgen/version"
+# frozen_string_literal: true
+
+require 'regexgen/version'
 
 module Regexgen
   class Error < StandardError; end
