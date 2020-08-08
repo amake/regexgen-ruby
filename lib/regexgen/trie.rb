@@ -26,8 +26,8 @@ module Regexgen
       Regexgen.minimize(@root, @alphabet)
     end
 
-    def to_s(flags = nil)
-      Regexgen.to_regex(minimize, flags)
+    def to_s
+      Regexgen.to_regex(minimize)
     end
 
     def to_regex(flags = nil)
@@ -35,7 +35,7 @@ module Regexgen
       flags_i |= Regexp::EXTENDED if flags&.include?('x')
       flags_i |= Regexp::IGNORECASE if flags&.include?('i')
       flags_i |= Regexp::MULTILINE if flags&.include?('m')
-      Regexp.new(to_s(flags), flags_i)
+      Regexp.new(to_s, flags_i)
     end
   end
 end

@@ -4,7 +4,7 @@ require 'regexgen/ast'
 
 module Regexgen
   class<<self
-    def to_regex(root, flags)
+    def to_regex(root)
       states = root.visit.to_a
 
       a = []
@@ -38,7 +38,7 @@ module Regexgen
         end
       end
 
-      b[0].to_s(flags)
+      b[0].to_s
     end
 
     def star(exp)

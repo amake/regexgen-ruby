@@ -16,8 +16,8 @@ module Regexgen
         @options[0].length
       end
 
-      def to_s(flags = nil)
-        @options.map { |o| Ast.parens(o, self, flags) }.join('|')
+      def to_s
+        @options.map { |o| Ast.parens(o, self) }.join('|')
       end
 
       private
@@ -49,7 +49,7 @@ module Regexgen
         true
       end
 
-      def to_s(_flags = nil)
+      def to_s
         # TODO: Implement ranges?
         "[#{@set.join}]"
       end
@@ -73,8 +73,8 @@ module Regexgen
         @a.length + @b.length
       end
 
-      def to_s(flags = nil)
-        Ast.parens(@a, self, flags) + Ast.parens(@b, self, flags)
+      def to_s
+        Ast.parens(@a, self) + Ast.parens(@b, self)
       end
 
       def literal(side)
@@ -110,8 +110,8 @@ module Regexgen
         @expr.length
       end
 
-      def to_s(flags = nil)
-        Ast.parens(@expr, self, flags) + @type
+      def to_s
+        Ast.parens(@expr, self) + @type
       end
     end
 
@@ -140,7 +140,7 @@ module Regexgen
         @value.length
       end
 
-      def to_s(_flags = nil)
+      def to_s
         # TODO: make sure this is correct
         Regexp.escape(@value)
       end
@@ -160,12 +160,11 @@ module Regexgen
     end
 
     class<<self
-      def parens(exp, parent, flags = nil)
-        is_unicode = flags&.include?('u')
-        str = exp.to_s(flags)
+      def parens(exp, parent)
+        str = exp.to_s
         if exp.precedence < parent.precedence
           unless exp.respond_to?(:single_character?) && exp.single_character?
-            return "(?:#{str})" unless is_unicode && exp.respond_to?(:single_codepoint?) && exp.single_codepoint?
+            return "(?:#{str})" unless exp.respond_to?(:single_codepoint?) && exp.single_codepoint?
           end
         end
 
