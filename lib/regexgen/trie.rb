@@ -20,5 +20,9 @@ module Regexgen
       end
       node.accepting = true
     end
+
+    def minimize
+      Regexgen.minimize(@root, @alphabet)
+    end
   end
 end
