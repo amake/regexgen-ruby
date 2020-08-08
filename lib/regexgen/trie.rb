@@ -2,6 +2,7 @@
 
 require 'regexgen/state'
 require 'regexgen/minimize'
+require 'regexgen/regex'
 
 module Regexgen
   class Trie
@@ -23,6 +24,18 @@ module Regexgen
 
     def minimize
       Regexgen.minimize(@root, @alphabet)
+    end
+
+    def to_s(flags = nil)
+      Regexgen.to_regex(minimize, flags)
+    end
+
+    def to_regex(flags = nil)
+      flags_i = 0
+      flags_i |= Regexp::EXTENDED if flags&.include?('x')
+      flags_i |= Regexp::IGNORECASE if flags&.include?('i')
+      flags_i |= Regexp::MULTILINE if flags&.include?('m')
+      Regexp.new(to_s(flags), flags_i)
     end
   end
 end

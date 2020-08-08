@@ -24,5 +24,15 @@ module Regexgen
       # TODO: Real test
       refute_nil sut.minimize
     end
+
+    def test_trie_to_regex
+      strings = %w[foo foobar fool flake fo]
+      sut = Trie.new
+      strings.each(&sut.method(:add))
+
+      assert_equal('f(?:o(?:o(?:bar|l)?)?|lake)', sut.to_s)
+      regex = sut.to_regex
+      assert(strings.all?(&regex.method(:match?)))
+    end
   end
 end

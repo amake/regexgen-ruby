@@ -3,6 +3,11 @@ inherit_from: .rubocop_todo.yml
 Style/AsciiComments:
   Enabled: false
 
+Naming/MethodParameterName:
+  Exclude:
+    - 'lib/regexgen/regex.rb'
+    - 'lib/regexgen/ast.rb'
+
 Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
 Layout/SpaceAroundMethodCallOperator:
