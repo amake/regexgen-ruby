@@ -3,7 +3,12 @@
 require 'regexgen/version'
 require 'regexgen/trie'
 
+# Generate regular expressions that match a set of strings
 module Regexgen
-  class Error < StandardError; end
-  # Your code goes here...
+  class <<self
+    def generate(strings, flags = nil)
+      Trie.new.tap { |t| strings.each(&t.method(:add)) }
+          .to_regex(flags)
+    end
+  end
 end

@@ -34,5 +34,11 @@ module Regexgen
       regex = sut.to_regex
       assert(strings.all?(&regex.method(:match?)))
     end
+
+    def test_regex
+      strings = %w[foo foobar fool flake fo]
+      regex = Regexgen.generate(*strings)
+      assert(strings.all?(&regex.method(:match?)))
+    end
   end
 end
