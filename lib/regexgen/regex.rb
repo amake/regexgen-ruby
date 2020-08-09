@@ -46,42 +46,44 @@ module Regexgen
     end
 
     def union(a, b)
-      return a || b unless a && b && a != b
+      if a && b && a != b
+        res = nil
+        a, b, start = remove_common_substring(a, b, :start)
+        a, b, end_ = remove_common_substring(a, b, :end)
 
-      res = nil
-      a, b, start = remove_common_substring(a, b, :start)
-      a, b, end_ = remove_common_substring(a, b, :end)
+        if (a.respond_to?(:empty?) && a.empty?) || (b.respond_to?(:empty?) && b.empty?)
+          res = Ast::Repetition.new(a.empty? ? b : a, '?')
+        elsif a.is_a?(Ast::Repetition) && a.type == '?'
+          res = Ast::Repetition.new(Ast::Alternation.new(a.expr, b), '?')
+        elsif b.is_a?(Ast::Repetition) && b.type == '?'
+          res = Ast::Repetition.new(Ast::Alternation.new(a, b.expr), '?')
+        else
+          ac = a.char_class if a.respond_to?(:char_class)
+          bc = b.char_class if b.respond_to?(:char_class)
+          res = if ac && bc
+                  Ast::CharClass.new(ac, bc)
+                else
+                  Ast::Alternation.new(a, b)
+                end
+        end
 
-      if (a.respond_to?(:empty?) && a.empty?) || (b.respond_to?(:empty?) && b.empty?)
-        res = Ast::Repetition.new(a.empty? ? b : a, '?')
-      elsif a.is_a?(Ast::Repetition) && a.type == '?'
-        res = Ast::Repetition.new(Ast::Alternation.new(a.expr, b), '?')
-      elsif b.is_a?(Ast::Repetition) && b.type == '?'
-        res = Ast::Repetition.new(Ast::Alternation.new(a, b.expr), '?')
-      else
-        ac = a.char_class if a.respond_to?(:char_class)
-        bc = b.char_class if b.respond_to?(:char_class)
-        res = if ac && bc
-                Ast::CharClass.new(ac, bc)
-              else
-                Ast::Alternation.new(a, b)
-              end
+        res = Ast::Concatenation.new(Ast::Literal.new(start), res) unless start.nil? || start.empty?
+
+        res = Ast::Concatenation.new(res, Ast::Literal.new(end_)) unless end_.nil? || end_.empty?
+
+        return res
       end
 
-      res = Ast::Concatenation.new(Ast::Literal.new(start), res) if start
-
-      res = Ast::Concatenation.new(res, Ast::Literal.new(end_)) if end_
-
-      res
+      a || b
     end
 
     def remove_common_substring(a, b, side)
       al = a.literal(side) if a.respond_to?(:literal)
       bl = b.literal(side) if b.respond_to?(:literal)
-      return [a, b, nil] unless al && bl
+      return [a, b, nil] if al.nil? || bl.nil? || al.empty? || bl.empty?
 
       s = common_substring(al, bl, side)
-      return [a, b, ''] unless s
+      return [a, b, ''] if s.empty?
 
       a = a.remove_substring(side, s.length)
       b = b.remove_substring(side, s.length)
