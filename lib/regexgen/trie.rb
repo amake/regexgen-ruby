@@ -22,6 +22,10 @@ module Regexgen
       node.accepting = true
     end
 
+    def add_all(strs)
+      strs.each(&method(:add))
+    end
+
     def minimize
       Regexgen.minimize(@root, @alphabet)
     end
