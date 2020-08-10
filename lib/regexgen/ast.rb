@@ -50,12 +50,37 @@ module Regexgen
       end
 
       def to_s
-        # TODO: Implement ranges?
-        "[#{@set.join}]"
+        "[#{to_ranges_string}]"
       end
 
       def char_class
         @set
+      end
+
+      private
+
+      def to_ranges_string
+        to_ranges.map do |first, last|
+          if first == last
+            first
+          elsif first.ord.next == last.ord
+            "#{first}#{last}"
+          else
+            "#{first}-#{last}"
+          end
+        end.join
+      end
+
+      def to_ranges
+        set = @set.sort
+        ranges = [[set.first, set.first]]
+        set.drop(1).each_with_object(ranges) do |c, acc|
+          if acc.last.last.ord.next == c.ord
+            acc.last[-1] = c
+          else
+            acc << [c, c]
+          end
+        end
       end
     end
 
@@ -141,7 +166,6 @@ module Regexgen
       end
 
       def to_s
-        # TODO: make sure this is correct
         Regexp.escape(@value)
       end
 
