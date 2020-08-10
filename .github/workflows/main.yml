@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Ruby, JRuby and TruffleRuby
+      uses: ruby/setup-ruby@v1.40.0
+    - name: Install dependencies
+      run: bundle install
+    - name: Run tests
+      run: bundle exec rake test
+    - name: Lint
+      run: bundle exec rubocop
