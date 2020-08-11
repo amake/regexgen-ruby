@@ -4,6 +4,42 @@ require 'regexgen/ast'
 
 module Regexgen
   class<<self
+    # Brzozowski algebraic method
+    # https://cs.stackexchange.com/a/2392
+    #
+    # Largely ported from
+    # https://github.com/devongovett/regexgen/blob/7ef10aef3a414b10554822cdf6e90389582b1890/src/regex.js
+    #
+    # Initialize B
+    #
+    #   for i = 1 to m:
+    #     if final(i):
+    #       B[i] := ε
+    #     else:
+    #       B[i] := ∅
+    #
+    # Initialize A
+    #
+    #   for i = 1 to m:
+    #     for j = 1 to m:
+    #       for a in Σ:
+    #         if trans(i, a, j):
+    #           A[i,j] := a
+    #         else:
+    #           A[i,j] := ∅
+    #
+    # Solve
+    #
+    #   for n = m decreasing to 1:
+    #     B[n] := star(A[n,n]) . B[n]
+    #     for j = 1 to n:
+    #       A[n,j] := star(A[n,n]) . A[n,j];
+    #     for i = 1 to n:
+    #       B[i] += A[i,n] . B[n]
+    #       for j = 1 to n:
+    #         A[i,j] += A[i,n] . A[n,j]
+    #
+    # Result is e := B[1]
     def to_regex(root)
       states = root.visit.to_a
 
