@@ -21,3 +21,5 @@ jobs:
       run: bundle exec rake test
     - name: Lint
       run: bundle exec rubocop
+    - name: Type check
+      run: bundle exec solargraph typecheck --level typed
