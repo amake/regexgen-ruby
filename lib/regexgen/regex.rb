@@ -60,7 +60,7 @@ module Regexgen
         if a[n][n]
           b[n] = concat(star(a[n][n]), b[n])
           (0...n).each do |j|
-            a[n][j] = concat(start(a[n][n]), a[n][j])
+            a[n][j] = concat(star(a[n][n]), a[n][j])
           end
         end
 
