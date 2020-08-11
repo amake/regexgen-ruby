@@ -29,6 +29,19 @@ require 'regexgen'
 Regexgen.generate(['foobar', 'foobaz', 'foozap', 'fooza']) #=> /foo(?:zap?|ba[rz])/
 ```
 
+## CLI
+
+`regexgen` also has a simple CLI to generate regexes using inputs from the
+command line.
+
+```sh
+$ regexgen
+usage: regexgen [-mix] strings...
+    -m                               Multiline flag
+    -i                               Case-insensitive flag
+    -x                               Extended flag
+```
+
 ## Unicode handling
 
 Unlike the JavaScript version, this package does not do any special Unicode

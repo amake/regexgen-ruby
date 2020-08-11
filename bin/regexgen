@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'regexgen'
+require 'optparse'
+
+REGEX_FLAGS = {
+  'm' => 'Multiline flag',
+  'i' => 'Case-insensitive flag',
+  'x' => 'Extended flag'
+}.freeze
+
+flags = []
+op = OptionParser.new do |opts|
+  opts.banner = "usage: regexgen [-#{REGEX_FLAGS.keys.join}] strings..."
+  REGEX_FLAGS.each do |flag, description|
+    opts.on("-#{flag}", description) { |_| flags << flag }
+  end
+end
+
+begin
+  op.parse!
+rescue OptionParser::InvalidOption => e
+  puts e, op.help
+  exit(1)
+end
+
+if ARGV.empty?
+  puts op.help
+  exit(1)
+end
+
+puts Regexgen.generate(ARGV, flags)
