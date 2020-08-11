@@ -22,7 +22,7 @@ module Regexgen
 
       (states.length - 1).downto(0) do |n|
         if a[n][n]
-          b[n] = concat(star(a[n][n], b[n]))
+          b[n] = concat(star(a[n][n]), b[n])
           (0...n).each do |j|
             a[n][j] = concat(start(a[n][n]), a[n][j])
           end
