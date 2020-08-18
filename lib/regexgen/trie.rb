@@ -27,7 +27,7 @@ module Regexgen
     end
 
     def minimize
-      Regexgen.minimize(@root, @alphabet)
+      Regexgen.minimize(@root)
     end
 
     def to_s

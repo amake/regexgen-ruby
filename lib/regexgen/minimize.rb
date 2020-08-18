@@ -41,20 +41,34 @@ module Regexgen
     # c is a letter of the alphabet
     # A ∩ B is intersection (A & B)
     # |A| is the cardinality of A (A.size)
-    def minimize(root, alphabet)
+    def minimize(root)
       states = root.visit
       final_states = states.select(&:accepting).to_set
+
+      # Create a map of incoming transitions to each state, grouped by
+      # character.
+      transitions = Hash.new { |h, k| h[k] = Hash.new { |h_, k_| h_[k_] = Set.new } }
+      states.each_with_object(transitions) do |s, acc|
+        s.transitions.each do |t, st|
+          acc[st][t] << s
+        end
+      end
 
       p = Set[states, final_states]
       w = Set.new(p)
       until w.empty?
         a = w.shift
-        alphabet.each do |c|
-          x = states.each_with_object(Set.new) do |s, acc|
-            next unless s.transitions.key?(c)
 
-            acc.add(s) if a.include?(s.transitions[c])
+        # Collect states that have transitions leading to states in a, grouped
+        # by character.
+        t = Hash.new { |h, k| h[k] = Set.new }
+        a.each_with_object(t) do |s, acc|
+          transitions[s].each do |t_, x|
+            acc[t_].merge(x)
           end
+        end
+
+        t.each_value do |x|
           p.to_a.each do |y|
             intersection = x & y
             next if intersection.empty?
