@@ -26,6 +26,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'byebug', '~> 11'
-  spec.add_development_dependency 'rubocop', '~> 0.89'
-  spec.add_development_dependency 'solargraph', '~> 0.39'
+  spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'solargraph'
 end
