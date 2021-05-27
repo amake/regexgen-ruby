@@ -178,8 +178,11 @@ module Regexgen
       end
 
       def remove_substring(side, len)
-        return Literal.new(@value[len...@value.length]) if side == :start
-        return Literal.new(@value[0...(@value.length - len)]) if side == :end
+        case side
+        when :start then Literal.new(@value[len...@value.length])
+        when :end then Literal.new(@value[0...(@value.length - len)])
+        else raise "Unknown side: #{side}"
+        end
       end
     end
 
