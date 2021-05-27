@@ -10,7 +10,7 @@ module Regexgen
       end
 
       def replace(search, *replacements)
-        raise unless delete?(search)
+        raise("Failed to delete #{search}") unless delete?(search)
 
         merge(replacements)
       end
