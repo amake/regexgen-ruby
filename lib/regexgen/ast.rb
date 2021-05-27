@@ -178,7 +178,7 @@ module Regexgen
       end
 
       def remove_substring(side, len)
-        return Literal.new(@value[len..]) if side == :start
+        return Literal.new(@value[len...@value.length]) if side == :start
         return Literal.new(@value[0...(@value.length - len)]) if side == :end
       end
     end
