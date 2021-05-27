@@ -188,14 +188,13 @@ module Regexgen
 
     class<<self
       def parens(exp, parent)
-        str = exp.to_s
-        if exp.precedence < parent.precedence
-          unless exp.respond_to?(:single_character?) && exp.single_character?
-            return "(?:#{str})" unless exp.respond_to?(:single_codepoint?) && exp.single_codepoint?
-          end
+        if exp.precedence < parent.precedence &&
+           !(exp.respond_to?(:single_character?) && exp.single_character?) &&
+           !(exp.respond_to?(:single_codepoint?) && exp.single_codepoint?)
+          "(?:#{exp})"
+        else
+          exp.to_s
         end
-
-        str
       end
     end
   end
