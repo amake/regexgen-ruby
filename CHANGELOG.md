@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.3.1] - 2021-10-14
+
+- Fix missing `require 'set'`
+
 ## [0.3.0] - 2020-08-18
 
 - Improve performance
