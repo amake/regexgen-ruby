@@ -5,7 +5,7 @@ require 'regexgen/set'
 module Regexgen
   using SetUtil
 
-  class<<self
+  class << self
     # Hopcroft's DSA minimization algorithm
     # https://en.wikipedia.org/wiki/DFA_minimization#Hopcroft's_algorithm
     #

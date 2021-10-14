@@ -186,7 +186,7 @@ module Regexgen
       end
     end
 
-    class<<self
+    class << self
       def parens(exp, parent)
         if exp.precedence < parent.precedence &&
            !(exp.respond_to?(:single_character?) && exp.single_character?) &&

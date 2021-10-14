@@ -3,7 +3,7 @@
 require 'regexgen/ast'
 
 module Regexgen
-  class<<self
+  class << self
     # Brzozowski algebraic method
     # https://cs.stackexchange.com/a/2392
     #
