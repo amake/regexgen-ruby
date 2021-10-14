@@ -11,7 +11,7 @@ module Regexgen
         item
       end
 
-      def replace(search, *replacements)
+      def replace_item(search, *replacements)
         raise("Failed to delete #{search}") unless delete?(search)
 
         merge(replacements)

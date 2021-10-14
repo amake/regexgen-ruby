@@ -76,9 +76,9 @@ module Regexgen
             complement = y - x
             next if complement.empty?
 
-            p.replace(y, intersection, complement)
+            p.replace_item(y, intersection, complement)
             if w.include?(y)
-              w.replace(y, intersection, complement)
+              w.replace_item(y, intersection, complement)
             elsif intersection.size <= complement.size
               w.add(intersection)
             else
