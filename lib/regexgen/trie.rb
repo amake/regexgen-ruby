@@ -23,7 +23,7 @@ module Regexgen
     end
 
     def add_all(strs)
-      strs.each(&method(:add))
+      strs.each { |s| add(s) }
     end
 
     def minimize

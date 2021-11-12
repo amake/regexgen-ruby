@@ -58,7 +58,7 @@ module Regexgen
 
     def test_trie
       sut = Trie.new
-      %w[foobar foobaz].each(&sut.method(:add))
+      %w[foobar foobaz].each { |s| sut.add(s) }
 
       assert_equal('fooba[rz]', sut.to_s)
       assert_equal(/fooba[rz]/, sut.to_regex)
@@ -107,7 +107,7 @@ module Regexgen
                  '|青森県|北海道'
       assert_equal(expected, sut.to_s)
       regex = sut.to_regex
-      assert(strings.all?(&regex.method(:match?)))
+      assert(strings.all? { |s| regex.match?(s) })
     end
   end
 end

@@ -7,7 +7,7 @@ require 'regexgen/trie'
 module Regexgen
   class << self
     def generate(strings, flags = nil)
-      Trie.new.tap { |t| strings.each(&t.method(:add)) }
+      Trie.new.tap { |t| strings.each { |s| t.add(s) } }
           .to_regex(flags)
     end
   end
