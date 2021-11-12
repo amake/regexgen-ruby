@@ -33,7 +33,7 @@ module Regexgen
     #
     # Key:
     #
-    # {...} is a Set (yes we have sets of sets here)
+    # { ... } is a Set (yes we have sets of sets here)
     # A \ B is complement (A - B)
     # Q is all states
     # F is final states
